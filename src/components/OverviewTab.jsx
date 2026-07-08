@@ -180,30 +180,22 @@ export default function OverviewTab({ sections, parkingLots, tickets, incidents 
             {/* Rest of fixtures list */}
             <div>
               <h3 style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '12px', fontWeight: '600' }}>Scheduled Tournament Fixtures</h3>
-              <div style={{ display: 'flex', flexDirection: 'col', gap: '10px' }}>
+              <div className="fixtures-list">
                 {fixturesList.map(fixture => (
-                  <div key={fixture.id} style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'space-between',
-                    padding: '12px 16px', 
-                    background: 'rgba(15, 18, 28, 0.4)',
-                    border: '1px solid var(--border-card)',
-                    borderRadius: '8px'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: '2' }}>
+                  <div key={fixture.id} className="fixture-row">
+                    <div className="fixture-teams">
                       <span style={{ fontSize: '18px' }}>{fixture.homeLogo}</span>
-                      <span style={{ fontWeight: '500', fontSize: '14px' }}>{fixture.homeTeam}</span>
+                      <span className="fixture-team-name">{fixture.homeTeam}</span>
                       <span style={{ color: 'var(--text-muted)', fontSize: '13px' }}>vs</span>
                       <span style={{ fontSize: '18px' }}>{fixture.awayLogo}</span>
-                      <span style={{ fontWeight: '500', fontSize: '14px' }}>{fixture.awayTeam}</span>
+                      <span className="fixture-team-name">{fixture.awayTeam}</span>
                     </div>
 
-                    <div style={{ flex: '1', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                    <div className="fixture-date">
                       {fixture.date}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div className="fixture-status">
                       <span style={{ 
                         fontSize: '11px', 
                         fontWeight: '700', 

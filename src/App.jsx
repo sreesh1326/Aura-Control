@@ -76,7 +76,7 @@ function App() {
 
   // Compute active critical threats for top warning ticker
   const criticalThreats = incidents.filter(i => i.status !== 'Resolved' && i.severity === 'Critical');
-  const crowdAlerts = sections.filter(s => (s.occupancy / s.capacity) * 100 > 90);
+  const crowdAlerts = sections.filter(s => (s.occupancy / s.capacity) * 100 >= 95);
 
   const getSystemStatus = () => {
     if (criticalThreats.length > 0) return { name: 'CRITICAL WARNING', color: 'var(--rose)' };
