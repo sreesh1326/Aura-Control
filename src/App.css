@@ -1,0 +1,503 @@
+/* App.css - Specific component styling for the Smart Stadium Dashboard */
+
+.app-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+/* Sidebar navigation */
+.sidebar {
+  width: 260px;
+  background: rgba(10, 12, 20, 0.85);
+  border-right: 1px solid var(--border-card);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 18px;
+  color: white;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(to right, #ffffff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 12px;
+  flex-grow: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  font-size: 15px;
+  transition: all 0.2s ease;
+}
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(139, 92, 246, 0.1));
+  color: var(--cyan);
+  border-left: 3px solid var(--cyan);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.sidebar-footer {
+  padding: 20px;
+  border-top: 1px solid var(--border-card);
+  font-size: 12px;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Main content area */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.header-bar {
+  height: 70px;
+  background: rgba(10, 12, 20, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header-title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.header-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--emerald);
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.time-badge {
+  font-size: 14px;
+  font-family: monospace;
+  color: var(--cyan);
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* Dashboard Views Container */
+.view-container {
+  padding: 32px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Card grids and flexboxes */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+}
+
+.col-12 { grid-column: span 12; }
+.col-8 { grid-column: span 8; }
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+.col-3 { grid-column: span 3; }
+
+@media (max-width: 1024px) {
+  .col-8, .col-6, .col-4, .col-3 {
+    grid-column: span 12;
+  }
+  .app-wrapper {
+    flex-direction: column;
+    overflow: auto;
+    height: auto;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-bottom: 1px solid var(--border-card);
+  }
+  .main-content {
+    height: auto;
+    overflow-y: visible;
+  }
+  .view-container {
+    padding: 16px;
+  }
+}
+
+/* Card Styles */
+.card-header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Interactive Ticket component */
+.ticket-mockup {
+  background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+}
+
+.ticket-mockup::before,
+.ticket-mockup::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: var(--bg-main);
+  border-radius: 50%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.ticket-mockup::before { left: -14px; border-right: 2px dashed rgba(255, 255, 255, 0.15); }
+.ticket-mockup::after { right: -14px; border-left: 2px dashed rgba(255, 255, 255, 0.15); }
+
+.ticket-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+/* Heatmap Sections */
+.stadium-svg-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(5, 7, 12, 0.6);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid var(--border-card);
+}
+
+.stadium-path {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  stroke: rgba(255, 255, 255, 0.2);
+  stroke-width: 2px;
+}
+
+.stadium-path:hover {
+  filter: brightness(1.2) drop-shadow(0 0 8px rgba(255, 255, 255, 0.2));
+}
+
+.stadium-path.selected {
+  stroke: var(--cyan);
+  stroke-width: 4px;
+}
+
+/* Parking Space grid */
+.parking-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.parking-slot {
+  aspect-ratio: 1/1.5;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px;
+  font-size: 9px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.parking-slot.available {
+  background: rgba(16, 185, 129, 0.1);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--emerald);
+}
+
+.parking-slot.occupied {
+  background: rgba(244, 63, 94, 0.1);
+  border-color: rgba(244, 63, 94, 0.4);
+  color: var(--rose);
+}
+
+.parking-slot.reserved {
+  background: rgba(139, 92, 246, 0.1);
+  border-color: rgba(139, 92, 246, 0.4);
+  color: var(--violet);
+}
+
+.parking-slot:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.2);
+}
+
+/* Incidents list and forms */
+.incident-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.incident-badge.critical {
+  background: rgba(244, 63, 94, 0.15);
+  color: var(--rose);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+.incident-badge.moderate {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--amber);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.incident-badge.low {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--cyan);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.logs-box {
+  background: rgba(5, 7, 12, 0.8);
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 16px;
+  height: 200px;
+  overflow-y: auto;
+  color: #a7f3d0;
+}
+
+.logs-box.fraud {
+  color: #fecdd3;
+  border-color: rgba(244, 63, 94, 0.2);
+}
+
+.log-entry {
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  padding-bottom: 4px;
+}
+
+/* Tables styling */
+.premium-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.premium-table th {
+  text-align: left;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-card);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.premium-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+}
+
+.premium-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Tab indicator */
+.tab-container {
+  display: flex;
+  gap: 12px;
+  background: rgba(15, 18, 28, 0.5);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid var(--border-card);
+  width: fit-content;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.tab-btn.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Glow button styling */
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), var(--violet));
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.5);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(244, 63, 94, 0.3);
+  color: var(--rose);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.btn-danger:hover {
+  background: rgba(244, 63, 94, 0.25);
+}
+
+/* Quick simulator speed widget */
+.sim-speed-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(15, 18, 28, 0.8);
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-card);
+}
