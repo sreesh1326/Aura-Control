@@ -102,7 +102,7 @@ function App() {
             onClick={() => setActiveTab('overview')}
           >
             <LayoutDashboard size={18} />
-            Overview & Tournament
+            <span className="nav-label">Overview & Tournament</span>
           </button>
           
           <button 
@@ -110,7 +110,7 @@ function App() {
             onClick={() => setActiveTab('ticketing')}
           >
             <QrCode size={18} />
-            Smart Ticket & QR Scan
+            <span className="nav-label">Smart Ticket & QR Scan</span>
           </button>
           
           <button 
@@ -118,7 +118,7 @@ function App() {
             onClick={() => setActiveTab('crowd')}
           >
             <Users size={18} />
-            Crowd & Safety Dispatch
+            <span className="nav-label">Crowd & Safety Dispatch</span>
           </button>
           
           <button 
@@ -126,7 +126,7 @@ function App() {
             onClick={() => setActiveTab('parking')}
           >
             <Car size={18} />
-            Parking & Gates
+            <span className="nav-label">Parking & Gate Allocation</span>
           </button>
           
           <button 
@@ -138,7 +138,7 @@ function App() {
             }}
           >
             <ShieldAlert size={18} />
-            Emergency & Healthcare
+            <span className="nav-label">Emergency & Healthcare</span>
             {incidents.filter(i => i.status === 'Pending Dispatch').length > 0 && (
               <span style={{ 
                 marginLeft: 'auto', 
@@ -161,7 +161,7 @@ function App() {
             onClick={handleRunDiagnostics}
           >
             <Wrench size={18} />
-            Run Test Diagnostics
+            <span className="nav-label">Run Test Diagnostics</span>
           </button>
         </nav>
 

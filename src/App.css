@@ -10,7 +10,7 @@
 
 /* Sidebar navigation */
 .sidebar {
-  width: 260px;
+  width: 280px;
   background: rgba(10, 12, 20, 0.85);
   border-right: 1px solid var(--border-card);
   display: flex;
@@ -64,7 +64,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
+  min-height: 48px;
+  padding: 11px 16px;
   border-radius: 10px;
   color: var(--text-secondary);
   text-decoration: none;
@@ -72,8 +73,21 @@
   border: none;
   width: 100%;
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.25;
   transition: all 0.2s ease;
+}
+
+.nav-item svg {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+}
+
+.nav-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .nav-item:hover {
@@ -102,6 +116,7 @@
 /* Main content area */
 .main-content {
   flex-grow: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -191,12 +206,14 @@
 
 .col-12 { grid-column: span 12; }
 .col-8 { grid-column: span 8; }
+.col-7 { grid-column: span 7; }
 .col-6 { grid-column: span 6; }
+.col-5 { grid-column: span 5; }
 .col-4 { grid-column: span 4; }
 .col-3 { grid-column: span 3; }
 
 @media (max-width: 1024px) {
-  .col-8, .col-6, .col-4, .col-3 {
+  .col-8, .col-7, .col-6, .col-5, .col-4, .col-3 {
     grid-column: span 12;
   }
   .app-wrapper {
@@ -209,6 +226,10 @@
     height: auto;
     position: relative;
     border-bottom: 1px solid var(--border-card);
+  }
+  .nav-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   }
   .main-content {
     height: auto;
@@ -476,6 +497,8 @@
 
 @media (max-width: 1280px) {
   .dashboard-grid > .col-8,
+  .dashboard-grid > .col-7,
+  .dashboard-grid > .col-5,
   .dashboard-grid > .col-4 {
     grid-column: span 12;
   }
