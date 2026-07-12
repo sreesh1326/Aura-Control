@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Users, Shield, AlertTriangle, ShieldAlert, ArrowRight, RefreshCw, Zap } from 'lucide-react';
 
 export default function CrowdTab({ sections, setSections, simulationRunning, setSimulationRunning, simulationSpeed, setSimulationSpeed }) {
@@ -44,46 +44,31 @@ export default function CrowdTab({ sections, setSections, simulationRunning, set
     return () => clearInterval(timer);
   }, [simulationRunning, simulationSpeed, setSections]);
 
-  const handleAdjustGuards = (amount) => {
-    if (amount > 0 && standbyGuards <= 0) return; // No guards left
-    if (amount < 0 && selectedSection.securityGuards <= 0) return; // No guards to withdraw
-
+  const handleAdjustGuards = useCallback((amount) => {
+    if (amount > 0 && standbyGuards <= 0) return;
+    if (amount < 0 && selectedSection.securityGuards <= 0) return;
     setStandbyGuards(prev => prev - amount);
-    setSections(prev => prev.map(s => {
-      if (s.id === selectedSectionId) {
-        return { ...s, securityGuards: s.securityGuards + amount };
-      }
-      return s;
-    }));
-  };
+    setSections(prev => prev.map(s => s.id === selectedSectionId ? { ...s, securityGuards: s.securityGuards + amount } : s));
+  }, [standbyGuards, selectedSection, selectedSectionId, setSections]);
 
-  const handleAutoRebalance = () => {
-    // 1. Calculate total active security guards
+  const handleAutoRebalance = useCallback(() => {
     const totalAssigned = sections.reduce((acc, s) => acc + s.securityGuards, 0);
     const totalPool = totalAssigned + standbyGuards;
-    
-    // 2. Calculate ideal distribution based on section occupancy density
     const totalOccupancy = sections.reduce((acc, s) => acc + s.occupancy, 0);
-    
     if (totalOccupancy === 0) return;
 
     let distributed = 0;
-    const newSections = sections.map((s, idx) => {
-      // Proportional allocation based on occupancy density
-      let idealGuards = Math.round((s.occupancy / totalOccupancy) * totalPool);
-      // Ensure at least 3 guards per sector
-      idealGuards = Math.max(3, idealGuards);
+    const newSections = sections.map(s => {
+      const idealGuards = Math.max(3, Math.round((s.occupancy / totalOccupancy) * totalPool));
       distributed += idealGuards;
       return { ...s, securityGuards: idealGuards };
     });
 
-    // Handle rounding excess/deficit using standby pool
     const diff = totalPool - distributed;
     if (diff >= 0) {
       setStandbyGuards(diff);
       setSections(newSections);
     } else {
-      // If we over-allocated, pull from the VIP or lowest density sector
       let remainder = Math.abs(diff);
       const adjustedSections = newSections.map(s => {
         if (s.id === 'vip' && s.securityGuards > remainder + 3) {
@@ -95,7 +80,7 @@ export default function CrowdTab({ sections, setSections, simulationRunning, set
       setStandbyGuards(remainder);
       setSections(adjustedSections);
     }
-  };
+  }, [sections, standbyGuards, setSections]);
 
   const getHeatmapColor = (density) => {
     if (density < 50) return 'rgba(16, 185, 129, 0.4)'; // Emerald
@@ -104,12 +89,15 @@ export default function CrowdTab({ sections, setSections, simulationRunning, set
     return 'rgba(244, 63, 94, 0.7)'; // Rose/Red
   };
 
-  // Find if any section is overcrowding but lacks enough guards (guard ratio < 1 guard per 500 people)
-  const securityAlerts = sections.filter(s => {
-    const density = (s.occupancy / s.capacity) * 100;
-    const ratio = s.occupancy / (s.securityGuards || 1);
-    return density > 80 && ratio > 450;
-  });
+  // Memoised: sections where density > 80% and guard ratio is insufficient
+  const securityAlerts = useMemo(() =>
+    sections.filter(s => {
+      const density = (s.occupancy / s.capacity) * 100;
+      const ratio   = s.occupancy / (s.securityGuards || 1);
+      return density > 80 && ratio > 450;
+    }),
+    [sections]
+  );
 
   return (
     <div className="view-container">

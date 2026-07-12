@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { Calendar, User, Trophy, Shield, Activity, Users, MapPin, TrendingUp } from 'lucide-react';
 import { FIXTURES, POINTS_TABLE, PLAYER_STATS } from '../data/mockData';
 
@@ -6,18 +6,20 @@ export default function OverviewTab({ sections, parkingLots, tickets, incidents 
   const [fixturesList, setFixturesList] = useState(FIXTURES);
   const [selectedFixture, setSelectedFixture] = useState(FIXTURES[0]);
   
-  // Calculate total metrics
-  const totalOccupancy = sections.reduce((acc, curr) => acc + curr.occupancy, 0);
-  const totalCapacity = sections.reduce((acc, curr) => acc + curr.capacity, 0);
-  const totalGuards = sections.reduce((acc, curr) => acc + curr.securityGuards, 0);
-  const scannedTicketsCount = tickets.filter(t => t.scans > 0).length;
-  
-  const totalParkingSlots = parkingLots.reduce((acc, curr) => acc + curr.totalSlots, 0);
-  const occupiedParkingSlots = parkingLots.reduce((acc, curr) => acc + curr.occupiedSlots, 0);
-  const freeParkingSlots = totalParkingSlots - occupiedParkingSlots;
+  // Memoised derived metrics — avoids recomputing on every render
+  const totalOccupancy = useMemo(() => sections.reduce((acc, curr) => acc + curr.occupancy, 0), [sections]);
+  const totalCapacity  = useMemo(() => sections.reduce((acc, curr) => acc + curr.capacity, 0), [sections]);
+  const totalGuards    = useMemo(() => sections.reduce((acc, curr) => acc + curr.securityGuards, 0), [sections]);
+  const scannedTicketsCount = useMemo(() => tickets.filter(t => t.scans > 0).length, [tickets]);
 
-  // Active critical incidents
-  const activeCriticalIncidents = incidents.filter(i => i.status !== 'Resolved' && i.severity === 'Critical').length;
+  const totalParkingSlots   = useMemo(() => parkingLots.reduce((acc, curr) => acc + curr.totalSlots, 0), [parkingLots]);
+  const occupiedParkingSlots = useMemo(() => parkingLots.reduce((acc, curr) => acc + curr.occupiedSlots, 0), [parkingLots]);
+  const freeParkingSlots    = totalParkingSlots - occupiedParkingSlots;
+
+  const activeCriticalIncidents = useMemo(
+    () => incidents.filter(i => i.status !== 'Resolved' && i.severity === 'Critical').length,
+    [incidents]
+  );
 
   const handleUpdateScore = () => {
     // Update live fixture
@@ -229,12 +231,12 @@ export default function OverviewTab({ sections, parkingLots, tickets, incidents 
             <table className="premium-table">
               <thead>
                 <tr>
-                  <th>Rank</th>
-                  <th>Team</th>
-                  <th style={{ textAlign: 'center' }}>P</th>
-                  <th style={{ textAlign: 'center' }}>W</th>
-                  <th style={{ textAlign: 'center' }}>Pts</th>
-                  <th>Form</th>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Team</th>
+                  <th scope="col" style={{ textAlign: 'center' }}>P</th>
+                  <th scope="col" style={{ textAlign: 'center' }}>W</th>
+                  <th scope="col" style={{ textAlign: 'center' }}>Pts</th>
+                  <th scope="col">Form</th>
                 </tr>
               </thead>
               <tbody>
@@ -285,13 +287,13 @@ export default function OverviewTab({ sections, parkingLots, tickets, incidents 
             <table className="premium-table">
               <thead>
                 <tr>
-                  <th>Player Name</th>
-                  <th>Team</th>
-                  <th>Position</th>
-                  <th>Match Status / Stats</th>
-                  <th>Tournament Points</th>
-                  <th>Live Rating</th>
-                  <th>Health Triage Status</th>
+                  <th scope="col">Player Name</th>
+                  <th scope="col">Team</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Match Status / Stats</th>
+                  <th scope="col">Tournament Points</th>
+                  <th scope="col">Live Rating</th>
+                  <th scope="col">Health Triage Status</th>
                 </tr>
               </thead>
               <tbody>
